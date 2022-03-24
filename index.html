@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quadtree - Kaspar Ravel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script type="text/javascript" src="./build/qtree.js"></script>
+<script>
+
+class Point{
+    constructor(x,y){
+        this.pos = {};
+        this.pos.x = x;
+        this.pos.y = y;
+    }
+}
+
+let qtree;
+let points = [];
+
+function setup() {
+  createCanvas(600, 600);
+
+  for (let i = 0; i < 500; i++) {
+    points.push(new Point(random(0,width), random(0,height)));
+  }
+}
+
+function draw() {
+  background(250);
+
+  writeQtree();
+  movePoints();
+  qtree.renderPoints();
+  qtree.renderQuads();
+}
+
+function writeQtree(){
+  qtree = new Q.Quadtree();
+  for (let i = 0; i < points.length; i++) {
+      qtree.insert(points[i]);
+  }
+}
+
+function movePoints(){
+  for (let i = 0; i < points.length; i++) {
+      points[i].pos.x += random() - 0.5;
+      points[i].pos.y += random() - 0.5;
+  }
+}
+
+        //
+        // const request = q.query(new Q.Circle(250, 250, 500));
+        //
+        // for (let other of request) {
+        //     console.log(other);
+        // }
+
+
+</script>
+
+
+</body>
+
+
+</html>

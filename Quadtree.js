@@ -1,14 +1,11 @@
 // ##### Quadtree Class
 
-const WIDTH = 600 ; // default to p5js vars // (typeof width == undefined) ?
-const HEIGHT = 600 ;
-
 const Rectangle = require('./Rectangle.js') // import from other files
 const Circle = require('./Circle.js')
 
 class Quadtree {
 
-  constructor(boundary=new Rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT), capacity=4) {
+  constructor(boundary=new Rectangle(width / 2, height / 2, width, height), capacity=4) {
     this.boundary = boundary;
     this.capacity = capacity;
     this.points = [];
@@ -77,35 +74,35 @@ class Quadtree {
     return found;
   }
 
-  // renderPoints() {
+  renderPoints() {
 
-  //   for (let p of this.points) {
-  //     noStroke();
-  //     fill(255, 0, 0);
-  //     circle(p.pos.x, p.pos.y, 3);
-  //   }
+    for (let p of this.points) {
+      noStroke();
+      fill(225, 100, 180);
+      circle(p.pos.x, p.pos.y, 10);
+    }
 
-  //   if (this.divided) {
-  //     this.northwest.renderPoints();
-  //     this.northeast.renderPoints();
-  //     this.southwest.renderPoints();
-  //     this.southeast.renderPoints();
-  //   }
-  // }
+    if (this.divided) {
+      this.northwest.renderPoints();
+      this.northeast.renderPoints();
+      this.southwest.renderPoints();
+      this.southeast.renderPoints();
+    }
+  }
 
-  // renderQuads() {
-  //   if (this.divided) {
-  //     this.northwest.renderQuads();
-  //     this.northeast.renderQuads();
-  //     this.southwest.renderQuads();
-  //     this.southeast.renderQuads();
-  //   } else {
-  //     rectMode(CENTER);
-  //     noFill();
-  //     stroke(0, 255, 0);
-  //     rect(this.boundary.x, this.boundary.y, this.boundary.w*2-3, this.boundary.h*2-3);
-  //   }
-  // }
+  renderQuads() {
+    if (this.divided) {
+      this.northwest.renderQuads();
+      this.northeast.renderQuads();
+      this.southwest.renderQuads();
+      this.southeast.renderQuads();
+    } else {
+      rectMode(CENTER);
+      noFill();
+      stroke(200, 120, 150);
+      rect(this.boundary.x, this.boundary.y, this.boundary.w*2-3, this.boundary.h*2-3);
+    }
+  }
 }
 
 
