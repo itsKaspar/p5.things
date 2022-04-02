@@ -3,13 +3,15 @@
 
 <head>
     <title>Quadtree - Kaspar Ravel</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-<script type="text/javascript" src="./build/qtree.js"></script>
+<script type="text/javascript" src="./build/quadtree.min.js"></script>
+
+<div id="p5js">
 <script>
 
 class Point{
@@ -41,7 +43,7 @@ function draw() {
 }
 
 function writeQtree(){
-  qtree = new Q.Quadtree();
+  qtree = new quadtree.Quadtree();
   for (let i = 0; i < points.length; i++) {
       qtree.insert(points[i]);
   }
@@ -63,9 +65,7 @@ function movePoints(){
 
 
 </script>
-
+<div>
 
 </body>
-
-
 </html>
