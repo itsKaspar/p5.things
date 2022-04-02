@@ -7,8 +7,7 @@ class Circle {
   }
 
   contains(point) {
-    //let d = distSq(point.pos, createVector(this.x,this.y));
-    let d = (point.pos.x - this.x) ** 2 + (point.pos.y - this.y) ** 2;
+    let d = (point.x - this.x) ** 2 + (point.y - this.y) ** 2;
     return d <= this.r ** 2;
   }
 
@@ -39,6 +38,7 @@ class Circle {
 }
 
 module.exports = Circle;
+
 },{}],2:[function(require,module,exports){
 // ##### Quadtree Class
 
@@ -92,10 +92,9 @@ class Quadtree {
     }
   }
 
-  query(range, found) {
-    if (!found) {
-      found = [];
-    }
+  query(x,y,r, found=[]) {
+
+    const range = new Circle(x,y,r);
 
     if (!range.intersects(this.boundary)) {
       return found;
@@ -107,10 +106,10 @@ class Quadtree {
       }
     }
     if (this.divided) {
-      this.northwest.query(range, found);
-      this.northeast.query(range, found);
-      this.southwest.query(range, found);
-      this.southeast.query(range, found);
+      this.northwest.query(range.x, range.y, range.r, found);
+      this.northeast.query(range.x, range.y, range.r, found);
+      this.southwest.query(range.x, range.y, range.r, found);
+      this.southeast.query(range.x, range.y, range.r, found);
     }
 
     return found;
@@ -121,7 +120,7 @@ class Quadtree {
     for (let p of this.points) {
       noStroke();
       fill(225, 100, 180);
-      circle(p.pos.x, p.pos.y, 10);
+      circle(p.x, p.y, 10);
     }
 
     if (this.divided) {
@@ -159,10 +158,10 @@ class Rectangle {
   }
 
   contains(point) {
-    return (point.pos.x >= this.x - this.w &&
-      point.pos.x <= this.x + this.w &&
-      point.pos.y >= this.y - this.h &&
-      point.pos.y <= this.y + this.h);
+    return (point.x >= this.x - this.w &&
+      point.x <= this.x + this.w &&
+      point.y >= this.y - this.h &&
+      point.y <= this.y + this.h);
   }
 
   intersects(range) {
@@ -174,6 +173,7 @@ class Rectangle {
 }
 
 module.exports = Rectangle;
+
 },{}],4:[function(require,module,exports){
 const Rectangle = require('./js/Rectangle.js'); // import from other files
 const Circle = require('./js/Circle.js');

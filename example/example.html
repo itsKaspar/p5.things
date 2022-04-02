@@ -2,22 +2,22 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-    <link rel="stylesheet" href="../css/iframe.css">
+    <link rel="stylesheet" href="../css/style.css">
 	</head>
 	<body>
 
 <div id="p5js">
 
 <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<!-- <script src="../main.js"></script> -->
 <script src="../build/quadtree.min.js"></script>
 
 <script>
 
 class Point{
     constructor(x,y){
-        this.pos = {};
-        this.pos.x = x;
-        this.pos.y = y;
+        this.x = x;
+        this.y = y;
     }
 }
 
@@ -26,12 +26,9 @@ let points = [];
 
 function setup() {
   createCanvas(600, 600);
-
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 400; i++) {
     points.push(new Point(random(0,width), random(0,height)));
   }
-
-
 }
 
 function draw() {
@@ -39,22 +36,21 @@ function draw() {
 
   writeQtree();
   movePoints();
-  //qtree.renderPoints();
+
 	stroke(80, 180, 40,200);
   qtree.renderQuads();
-noStroke();
+	noStroke();
 	for(let i = 0 ; i < points.length ; i++){
-		const request = qtree.query(new quadtree.Circle(points[i].pos.x, points[i].pos.y, 10));
+		const request = qtree.query(points[i].x, points[i].y, 10);
 
-		if(request.length > 1){
+		if(request.length > 1){ // one more than themselves
 			fill(50,180,178,200);
 		}
 		else{
 			fill(50,100,100,200);
 		}
-		circle(points[i].pos.x, points[i].pos.y, 10);
+		circle(points[i].x, points[i].y, 10);
 	}
-
 }
 
 function writeQtree(){
@@ -66,8 +62,8 @@ function writeQtree(){
 
 function movePoints(){
   for (let i = 0; i < points.length; i++) {
-      points[i].pos.x += random() - 0.5;
-      points[i].pos.y += random() - 0.5;
+      points[i].x += random() - 0.5;
+      points[i].y += random() - 0.5;
   }
 }
 

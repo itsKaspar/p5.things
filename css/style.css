@@ -1,31 +1,13 @@
-/* @font-face {
- font-family: "Strange";
- src: url("fonts/Strange.ttf") format("truetype");
-} */
-
 *{
-	box-sizing: border-box; /* So the width will be 100% + 17px */
+	box-sizing: border-box;
 	margin:0;
 	padding:0;
 	border:0;
 	width:100%;
-    scrollbar-width: thin;
+  scrollbar-width: thin;
+	overflow: hidden;
 }
 
-/* #title{
-  position:absolute;
-  width:100%;
-  font-family: "Strange";
-  margin:auto;
-  text-align:center;
-  top: calc( 1 * ( ( 50vh - ( 600px / 2 ) ) / 2.3 ) ) ;
-  font-size:2em;
-} */
-
-h2{
-
-
-}
 body{
 	background-color:#f1f1f1;
 }
@@ -46,7 +28,6 @@ iframe{
 #right{
   left:50vw;
   overflow-y: scroll;
-
 }
 
 zero-md{

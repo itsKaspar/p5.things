@@ -7,10 +7,10 @@ class Rectangle {
   }
 
   contains(point) {
-    return (point.pos.x >= this.x - this.w &&
-      point.pos.x <= this.x + this.w &&
-      point.pos.y >= this.y - this.h &&
-      point.pos.y <= this.y + this.h);
+    return (point.x >= this.x - this.w &&
+      point.x <= this.x + this.w &&
+      point.y >= this.y - this.h &&
+      point.y <= this.y + this.h);
   }
 
   intersects(range) {

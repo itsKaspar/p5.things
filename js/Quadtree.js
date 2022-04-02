@@ -50,10 +50,9 @@ class Quadtree {
     }
   }
 
-  query(range, found) {
-    if (!found) {
-      found = [];
-    }
+  query(x,y,r, found=[]) {
+
+    const range = new Circle(x,y,r);
 
     if (!range.intersects(this.boundary)) {
       return found;
@@ -65,10 +64,10 @@ class Quadtree {
       }
     }
     if (this.divided) {
-      this.northwest.query(range, found);
-      this.northeast.query(range, found);
-      this.southwest.query(range, found);
-      this.southeast.query(range, found);
+      this.northwest.query(range.x, range.y, range.r, found);
+      this.northeast.query(range.x, range.y, range.r, found);
+      this.southwest.query(range.x, range.y, range.r, found);
+      this.southeast.query(range.x, range.y, range.r, found);
     }
 
     return found;
@@ -79,7 +78,7 @@ class Quadtree {
     for (let p of this.points) {
       noStroke();
       fill(225, 100, 180);
-      circle(p.pos.x, p.pos.y, 10);
+      circle(p.x, p.y, 10);
     }
 
     if (this.divided) {
