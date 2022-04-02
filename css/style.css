@@ -1,24 +1,56 @@
+/* @font-face {
+ font-family: "Strange";
+ src: url("fonts/Strange.ttf") format("truetype");
+} */
+
 *{
 	box-sizing: border-box; /* So the width will be 100% + 17px */
 	margin:0;
 	padding:0;
 	border:0;
 	width:100%;
-	font-family: "Nunito";
+    scrollbar-width: thin;
 }
 
+/* #title{
+  position:absolute;
+  width:100%;
+  font-family: "Strange";
+  margin:auto;
+  text-align:center;
+  top: calc( 1 * ( ( 50vh - ( 600px / 2 ) ) / 2.3 ) ) ;
+  font-size:2em;
+} */
+
+h2{
+
+
+}
 body{
 	background-color:#f1f1f1;
 }
 
-canvas{
-	position:relative;
+iframe, #right{
+  position:absolute;
   display:block;
-	height:600px;
-	width: 600px;
-	margin-left: auto;
-  margin-right: auto;
-	margin-top: calc( 1 * ( 50vh - (600px / 2) ) );
+  height:600px;
+  width: 600px;
+  top: calc( ( 1 * ( 50vh - (600px / 2) ) ) );
+}
+
+iframe{
+  right:50vw;
 	box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
-	z-index: 10000;
+}
+
+#right{
+  left:50vw;
+  overflow-y: scroll;
+
+}
+
+zero-md{
+  position:absolute;
+  display:block;
+  padding-left:20px;
 }

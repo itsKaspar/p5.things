@@ -99,8 +99,7 @@ class Quadtree {
     } else {
       rectMode(CENTER);
       noFill();
-      stroke(200, 120, 150);
-      rect(this.boundary.x, this.boundary.y, this.boundary.w*2-3, this.boundary.h*2-3);
+      rect(this.boundary.x, this.boundary.y, this.boundary.w*2-1, this.boundary.h*2-1);
     }
   }
 }

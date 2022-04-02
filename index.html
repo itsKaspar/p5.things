@@ -1,73 +1,34 @@
 <!DOCTYPE html>
 <html>
 
+
+
 <head>
-    <title>Quadtree - Kaspar Ravel</title>
+  <meta charset="utf-8">
+    <title>Quadtree</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Markdown Module to autoread the README.md file -->
+    <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
+
 </head>
 
 <body>
 
-<h1> Quadtree - Kaspar Ravel </h1>
-
-<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-<script type="text/javascript" src="./build/quadtree.min.js"></script>
-
-<div id="p5js">
-<script>
-
-class Point{
-    constructor(x,y){
-        this.pos = {};
-        this.pos.x = x;
-        this.pos.y = y;
-    }
-}
-
-let qtree;
-let points = [];
-
-function setup() {
-  createCanvas(600, 600);
-
-  for (let i = 0; i < 500; i++) {
-    points.push(new Point(random(0,width), random(0,height)));
-  }
-}
-
-function draw() {
-  background(250);
-
-  writeQtree();
-  movePoints();
-  qtree.renderPoints();
-  qtree.renderQuads();
-}
-
-function writeQtree(){
-  qtree = new quadtree.Quadtree();
-  for (let i = 0; i < points.length; i++) {
-      qtree.insert(points[i]);
-  }
-}
-
-function movePoints(){
-  for (let i = 0; i < points.length; i++) {
-      points[i].pos.x += random() - 0.5;
-      points[i].pos.y += random() - 0.5;
-  }
-}
-
-        //
-        // const request = q.query(new Q.Circle(250, 250, 500));
-        //
-        // for (let other of request) {
-        //     console.log(other);
-        // }
+<div id="right">
+<zero-md src="README.md"></zero-md>
+</div>
+<iframe style="overflow:scroll;" src="./test/test.html" />
 
 
-</script>
-<div>
+
+<!-- Simply set the `src` attribute to your MD file and win -->
+
+
 
 </body>
+
+
+
 </html>

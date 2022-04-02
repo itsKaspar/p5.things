@@ -141,8 +141,7 @@ class Quadtree {
     } else {
       rectMode(CENTER);
       noFill();
-      stroke(200, 120, 150);
-      rect(this.boundary.x, this.boundary.y, this.boundary.w*2-3, this.boundary.h*2-3);
+      rect(this.boundary.x, this.boundary.y, this.boundary.w*2-1, this.boundary.h*2-1);
     }
   }
 }
@@ -176,11 +175,11 @@ class Rectangle {
 
 module.exports = Rectangle;
 },{}],4:[function(require,module,exports){
-const Rectangle = require('./Rectangle.js'); // import from other files
-const Circle = require('./Circle.js');
-const Quadtree = require('./Quadtree.js');
+const Rectangle = require('./js/Rectangle.js'); // import from other files
+const Circle = require('./js/Circle.js');
+const Quadtree = require('./js/Quadtree.js');
 
 if(typeof window !== 'undefined') window.quadtree = { Quadtree, Rectangle, Circle }; // would change Q to the name of the library
 else module.exports = { Quadtree, Rectangle, Circle }; // in node would create a context
 
-},{"./Circle.js":1,"./Quadtree.js":2,"./Rectangle.js":3}]},{},[4]);
+},{"./js/Circle.js":1,"./js/Quadtree.js":2,"./js/Rectangle.js":3}]},{},[4]);

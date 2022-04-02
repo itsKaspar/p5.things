@@ -1,0 +1,13 @@
+*,
+*:after,
+*:before{
+width:100%;
+height:auto;
+margin:0;
+padding:0;
+box-sizing:border-box;
+transition:all 0.3s ease-in-out;
+border:0px solid white;
+overflow: hidden;
+cursor:pointer;
+}
