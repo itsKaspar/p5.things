@@ -9,66 +9,46 @@
 <div id="p5js">
 
 <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-<!-- <script src="../main.js"></script> -->
-<script src="../build/quadtree.min.js"></script>
+<script src="../build/tilde.min.js"></script>
 
 <script>
 
-class Point{
-    constructor(x,y){
-        this.x = x;
-        this.y = y;
-    }
-}
-
-let qtree;
-let points = [];
+let line;
+let segmentlength = 20;
 
 function setup() {
   createCanvas(600, 600);
-  for (let i = 0; i < 400; i++) {
-    points.push(new Point(random(0,width), random(0,height)));
-  }
+
+	let options = {
+		spawnNb: 10,
+		spawnPos: "circle",
+		spawnVel: "null",
+		maxVel: 0.5,
+		maxAcc: 2,
+		padding: 0,
+		chainDiv:segmentlength,
+		chainClose:true
+	}
+
+	line = new tilde.DifferentialLine(options, tilde.DifferentialNode);
 }
 
 function draw() {
-  background(250);
+  background(255);
 
-  writeQtree();
-  movePoints();
 
-	stroke(80, 180, 40,200);
-  qtree.renderQuads();
-	noStroke();
-	for(let i = 0 ; i < points.length ; i++){
-		const request = qtree.query(points[i].x, points[i].y, 10);
-
-		if(request.length > 1){ // one more than themselves
-			fill(50,180,178,200);
-		}
-		else{
-			fill(50,100,100,200);
-		}
-		circle(points[i].x, points[i].y, 10);
+	if(frameCount < 1000){
+		line.repulsionExp(1, segmentlength);
+		line.chainAttraction(0.5);
+		line.chainSubdivide();
+		line.update();
 	}
+
+	line.draw();
+	//line.drawChainClosed();
+	//line.data.qtree.renderPoints(); // make a draw function for the quadtree
+
 }
-
-function writeQtree(){
-  qtree = new quadtree.Quadtree();
-  for (let i = 0; i < points.length; i++) {
-      qtree.insert(points[i]);
-  }
-}
-
-function movePoints(){
-  for (let i = 0; i < points.length; i++) {
-      points[i].x += random() - 0.5;
-      points[i].y += random() - 0.5;
-  }
-}
-
-
-
 
 </script>
 <div>

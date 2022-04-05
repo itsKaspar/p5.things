@@ -7,7 +7,7 @@ class Circle {
   }
 
   contains(point) {
-    let d = (point.x - this.x) ** 2 + (point.y - this.y) ** 2;
+    let d = (point.pos.x - this.x) ** 2 + (point.pos.y - this.y) ** 2;
     return d <= this.r ** 2;
   }
 
@@ -40,10 +40,43 @@ class Circle {
 module.exports = Circle;
 
 },{}],2:[function(require,module,exports){
+class Point{
+    constructor(v){
+      this.pos = v.pos || createVector(width/2,height/2);
+    }
+}
+
+},{}],3:[function(require,module,exports){
+class Rectangle {
+  constructor(x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+
+  contains(point) {
+    return (point.pos.x >= this.x - this.w &&
+      point.pos.x <= this.x + this.w &&
+      point.pos.y >= this.y - this.h &&
+      point.pos.y <= this.y + this.h);
+  }
+
+  intersects(range) {
+    return !(range.x - range.w > this.x + this.w ||
+      range.x + range.w < this.x - this.w ||
+      range.y - range.h > this.y + this.h ||
+      range.y + range.h < this.y - this.h);
+  }
+}
+
+module.exports = Rectangle;
+
+},{}],4:[function(require,module,exports){
 // ##### Quadtree Class
 
-const Rectangle = require('./Rectangle.js') // import from other files
-const Circle = require('./Circle.js')
+const Rectangle = require('../geometry/Rectangle.js') // import from other files
+const Circle = require('../geometry/Circle.js')
 
 class Quadtree {
 
@@ -148,38 +181,18 @@ class Quadtree {
 
 module.exports = Quadtree;
 
-},{"./Circle.js":1,"./Rectangle.js":3}],3:[function(require,module,exports){
-class Rectangle {
-  constructor(x, y, w, h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-  }
+},{"../geometry/Circle.js":1,"../geometry/Rectangle.js":3}],5:[function(require,module,exports){
+// Geometry
 
-  contains(point) {
-    return (point.x >= this.x - this.w &&
-      point.x <= this.x + this.w &&
-      point.y >= this.y - this.h &&
-      point.y <= this.y + this.h);
-  }
+const Point = require('./js/geometry/Point.js')
+const Rectangle = require('./js/geometry/Rectangle.js'); // import from other files
+const Circle = require('./js/geometry/Circle.js');
 
-  intersects(range) {
-    return !(range.x - range.w > this.x + this.w ||
-      range.x + range.w < this.x - this.w ||
-      range.y - range.h > this.y + this.h ||
-      range.y + range.h < this.y - this.h);
-  }
-}
+// Quadtree
 
-module.exports = Rectangle;
+const Quadtree = require('./js/quadtree/Quadtree.js');
 
-},{}],4:[function(require,module,exports){
-const Rectangle = require('./js/Rectangle.js'); // import from other files
-const Circle = require('./js/Circle.js');
-const Quadtree = require('./js/Quadtree.js');
+if(typeof window !== 'undefined') window.quadtree = { Quadtree, Rectangle, Circle, Point }; // would change Q to the name of the library
+else module.exports = { Quadtree, Rectangle, Circle, Point }; // in node would create a context
 
-if(typeof window !== 'undefined') window.quadtree = { Quadtree, Rectangle, Circle }; // would change Q to the name of the library
-else module.exports = { Quadtree, Rectangle, Circle }; // in node would create a context
-
-},{"./js/Circle.js":1,"./js/Quadtree.js":2,"./js/Rectangle.js":3}]},{},[4]);
+},{"./js/geometry/Circle.js":1,"./js/geometry/Point.js":2,"./js/geometry/Rectangle.js":3,"./js/quadtree/Quadtree.js":4}]},{},[5]);

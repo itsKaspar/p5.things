@@ -6,7 +6,7 @@ class Circle {
   }
 
   contains(point) {
-    let d = (point.x - this.x) ** 2 + (point.y - this.y) ** 2;
+    let d = (point.pos.x - this.x) ** 2 + (point.pos.y - this.y) ** 2;
     return d <= this.r ** 2;
   }
 

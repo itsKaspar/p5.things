@@ -1,7 +1,7 @@
 // ##### Quadtree Class
 
-const Rectangle = require('./Rectangle.js') // import from other files
-const Circle = require('./Circle.js')
+const Rectangle = require('../geometry/Rectangle.js') // import from other files
+const Circle = require('../geometry/Circle.js')
 
 class Quadtree {
 
@@ -45,7 +45,7 @@ class Quadtree {
     }
 
     if (this.northeast.insert(point) || this.northwest.insert(point) ||
-      this.southeast.insert(point) || this.southwest.insert(point)) {
+        this.southeast.insert(point) || this.southwest.insert(point)) {
       return true;
     }
   }
@@ -78,7 +78,7 @@ class Quadtree {
     for (let p of this.points) {
       noStroke();
       fill(225, 100, 180);
-      circle(p.x, p.y, 10);
+      circle(p.pos.x, p.pos.y, 10);
     }
 
     if (this.divided) {
@@ -100,6 +100,11 @@ class Quadtree {
       noFill();
       rect(this.boundary.x, this.boundary.y, this.boundary.w*2-1, this.boundary.h*2-1);
     }
+  }
+
+  draw(){
+    this.renderQuads();
+    this.renderPoints();
   }
 }
 

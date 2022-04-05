@@ -4,8 +4,8 @@
   "description": "Quadtree Data Structure",
   "main": "main.js",
   "scripts": {
-    "build": "browserify main.js > build/quadtree.js",
-    "postbuild": "terser build/quadtree.js -cm -o build/quadtree.min.js",
+    "build": "browserify main.js > build/tilde.js",
+    "postbuild": "terser build/tilde.js -cm -o build/tilde.min.js",
     "server": "python -m http.server"
   },
   "repository": {
