@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <link rel="stylesheet" href="../css/style.css">
+	</head>
+	<body>
+
+<div id="p5js">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script src="../build/tilde.js"></script>
+
+<script>
+
+let agents;
+
+function setup() {
+  createCanvas(600, 600);
+
+	let options = {
+		spawnNb: 500,
+		spawnPos: "random",
+		maxVel: 1,
+		maxAcc: 1,
+		padding: 0
+	}
+
+	agents = new tilde.AgentSystem(options);
+}
+
+function draw() {
+  background(255);
+
+	//agents.wander();
+	agents.repulsionExp(1, 20);
+	agents.wrap();
+	agents.update();
+	agents.draw();
+
+	//agents.data.qtree.renderPoints(); // make a draw function for the quadtree
+	//agents.data.qtree.renderQuads();
+}
+
+
+
+</script>
+<div>
+
+</body>
+</html>

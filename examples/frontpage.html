@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <link rel="stylesheet" href="../css/style.css">
+	</head>
+	<body>
+
+<div id="p5js">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script src="../build/tilde.min.js"></script>
+
+<script>
+
+let line;
+let segmentlength = 20;
+
+function setup() {
+  createCanvas(600, 600);
+
+	let options = {
+		spawnNb: 10,
+		spawnPos: "circle",
+		spawnVel: "null",
+		maxVel: 0.5,
+		maxAcc: 2,
+		padding: 0,
+		chainDiv:segmentlength,
+		chainClose:true
+	}
+
+	line = new tilde.DifferentialLine(options, tilde.DifferentialNode);
+}
+
+function draw() {
+  background(255);
+
+
+	if(frameCount < 1000){
+		line.repulsionExp(1, segmentlength);
+		line.chainAttraction(0.5);
+		line.chainSubdivide();
+		line.update();
+	}
+
+	line.draw();
+	//line.drawChainClosed();
+	//line.data.qtree.renderPoints(); // make a draw function for the quadtree
+
+}
+
+</script>
+<div>
+
+</body>
+</html>

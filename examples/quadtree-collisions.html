@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <link rel="stylesheet" href="../css/style.css">
+	</head>
+	<body>
+
+<div id="p5js">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script src="../build/tilde.min.js"></script>
+
+<script>
+
+let qtree;
+let points = [];
+
+function setup() {
+  createCanvas(600, 600);
+  for (let i = 0; i < 400; i++) {
+    points.push(new tilde.Point({pos : createVector(random(0,width), random(0,height))}));
+  }
+}
+
+function draw() {
+  background(250);
+
+  writeQtree();
+  movePoints();
+
+	stroke(80, 180, 40,200);
+  qtree.renderQuads();
+	noStroke();
+	for(let i = 0 ; i < points.length ; i++){
+		const request = qtree.query(points[i].pos.x, points[i].pos.y, 10); // quadtree request
+		if(request.length > 1) fill(50,180,178,200); // one more than themselves
+		else fill(50,100,100,200);
+		circle(points[i].pos.x, points[i].pos.y, 10);
+	}
+}
+
+function writeQtree(){
+  qtree = new tilde.Quadtree();
+  for (let i = 0; i < points.length; i++) {
+      qtree.insert(points[i]);
+  }
+}
+
+function movePoints(){
+  for (let i = 0; i < points.length; i++) {
+      points[i].pos.x += random() - 0.5;
+      points[i].pos.y += random() - 0.5;
+  }
+}
+
+</script>
+<div>
+
+</body>
+</html>
