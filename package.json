@@ -13,9 +13,8 @@
     "url": "git+https://github.com/itsKaspar/Quadtree.git"
   },
   "keywords": [
-    "quadtree",
-    "data",
-    "structure"
+    "framework",
+    "p5js"
   ],
   "author": "Kaspar Ravel <kaspar.ravel@gmail.com>",
   "license": "GPL-3.0",
