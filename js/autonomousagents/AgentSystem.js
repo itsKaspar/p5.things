@@ -3,10 +3,10 @@ const ParticleSystem = require('../particlesystem/ParticleSystem.js');
 
 class AgentSystem extends ParticleSystem{
 
-	constructor(o, Instance=Agent){
-		super(o, Instance);
+	constructor(o){
+		super(o);
 
-		this.safeDistance = 20;																														// DOES THIS RLY NEED TO BE THERE ?
+		this.safeDistance = 20; 	// DOES THIS RLY NEED TO BE THERE ?
 	}
 
 	//====================================================

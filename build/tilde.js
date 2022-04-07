@@ -40,16 +40,16 @@ class Agent extends Particle{
 
 module.exports = Agent;
 
-},{"../particlesystem/Particle.js":11}],2:[function(require,module,exports){
+},{"../particlesystem/Particle.js":14}],2:[function(require,module,exports){
 const Agent = require('./Agent.js');
 const ParticleSystem = require('../particlesystem/ParticleSystem.js');
 
 class AgentSystem extends ParticleSystem{
 
-	constructor(o, Instance=Agent){
-		super(o, Instance);
+	constructor(o){
+		super(o);
 
-		this.safeDistance = 20;																														// DOES THIS RLY NEED TO BE THERE ?
+		this.safeDistance = 20; 	// DOES THIS RLY NEED TO BE THERE ?
 	}
 
 	//====================================================
@@ -206,7 +206,7 @@ class AgentSystem extends ParticleSystem{
 
 module.exports = AgentSystem;
 
-},{"../particlesystem/ParticleSystem.js":13,"./Agent.js":1}],3:[function(require,module,exports){
+},{"../particlesystem/ParticleSystem.js":16,"./Agent.js":1}],3:[function(require,module,exports){
 const Agent = require('../autonomousagents/Agent.js');
 
 class ChainNode extends Agent {
@@ -222,11 +222,10 @@ const AgentSystem = require('../autonomousagents/AgentSystem.js'); // import fro
 const Maths = require('../maths/Maths.js'); // import from other files
 
 class ChainSystem extends AgentSystem{
-	constructor(o, Instance){
+	constructor(o){
 
-		super(o, Instance);
+		super(o);
 
-		this.Instance = Instance;
 		this.chainDiv = o.chainDiv || 20; // defines the distance between each node ( for subdivisions )
 		this.chainClose = o.chainClose !== undefined ? o.chainClose : true ;
 
@@ -283,7 +282,7 @@ class ChainSystem extends AgentSystem{
 	makeChild(parent1, parent2){
 		const mid = maths.Maths.midpoint(parent1.pos, parent2.pos);
 		const v = { pos : mid };
-		return new this.Instance(v);
+		return new this.instance(v);
 	}
 
   //====================================================
@@ -508,8 +507,8 @@ else module.exports = { Maths }; // in node would create a context
 const ChainSystem = require('../../chainsystem/ChainSystem.js');
 
 class DifferentialLine extends ChainSystem {
-  constructor(o, Instance){
-    super(o, Instance);
+  constructor(o){
+    super(o);
 
   }
 }
@@ -532,6 +531,192 @@ class DifferentialNode extends ChainNode {
 module.exports = DifferentialNode;
 
 },{"../../chainsystem/ChainNode.js":3}],11:[function(require,module,exports){
+const Agent = require('../../autonomousagents/Agent.js');
+
+class SCBranch extends Agent{
+  constructor(v, parent, dir){
+    super(v);
+    this.parent = parent || null;
+    this.dir = dir || createVector(0, -1);
+    this.origDir = this.dir.copy();
+    this.count = 0;
+    this.len = 5;
+
+  }
+
+  reset() {
+    this.dir = this.origDir.copy();
+    this.count = 0;
+  }
+
+  next() {
+    const nextDir = p5.Vector.mult(this.dir, this.len);
+    const nextPos = p5.Vector.add(this.pos, nextDir);
+    return new SCBranch({ pos : nextPos }, this, this.dir.copy());         // NEEED TO SWITCH THIS TO THIS INSTANCE
+  }
+
+  show() {
+    if (this.parent != null) {
+      stroke(255);
+      line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
+    }
+
+  }
+
+}
+
+module.exports = SCBranch;
+
+},{"../../autonomousagents/Agent.js":1}],12:[function(require,module,exports){
+const Agent = require('../../autonomousagents/Agent.js');
+
+class SCLeaf extends Agent {
+  constructor(v){
+    super(v);
+    this.pos = createVector(random(width), random(height - 100));
+    this.reached = false;
+  }
+
+  show() {
+    fill(255);
+    noStroke();
+    circle(this.pos.x, this.pos.y, 4);
+  }
+}
+
+module.exports = SCLeaf;
+
+},{"../../autonomousagents/Agent.js":1}],13:[function(require,module,exports){
+const AgentSystem = require('../../autonomousagents/AgentSystem.js');
+const SCBranch = require('./SCBranch.js');
+const SCLeaf = require('./SCLeaf');
+
+class SCTree {
+  constructor(start, IBranch=SCBranch, ILeaf=SCLeaf){
+
+    const o1 = {
+      spawnNb: 1000,
+      spawnPos: "random",
+      spawnVel: "null",
+      instance: ILeaf
+    };
+
+    const o2 = {
+      spawnNb : 2,
+      spawnPos: "random",
+      spawnVel: "null",
+      instance: IBranch
+    };
+
+    this.leaves = new AgentSystem(o1);
+    this.branches = new AgentSystem(o2);
+
+    this.max_dist = 100;
+    this.min_dist = 10;
+
+    // algorithm to grow in one direction until a leaf is found
+    // should update this to go forwards the closest leaf
+
+    for(let i = 0; i < this.branches.a.length ; i++){
+      this.trunk(this.branches.a[i])
+    }
+
+  }
+
+  trunk(root){
+    let current = root;
+    let found = false;
+
+    while (!found) {
+      for (let i = 0, len = this.leaves.a.length; i < len; i++) {
+        const d = p5.Vector.dist(current.pos, this.leaves.a[i].pos);
+        if (d < this.max_dist) {
+          found = true;
+        }
+      }
+      if (!found) {
+        var branch = current.next();
+        current = branch;
+        this.branches.a.push(current);
+      }
+    }
+  }
+
+  grow(){
+
+    for (let i = 0, len = this.leaves.a.length; i < len; i++) {
+
+      var leaf = this.leaves.a[i];
+      var closestBranch = null;
+      var record = this.max_dist;
+
+      const branches = this.branches.data.qtree.query(leaf.pos.x, leaf.pos.y, this.max_dist); // Quadtree request
+
+      for (var j = 0; j < branches.length; j++) {
+
+        var branch = branches[j];
+
+        var d = p5.Vector.dist(leaf.pos, branch.pos);
+        if (d < this.min_dist) {
+
+          leaf.reached = true;
+          closestBranch = null;
+          break;
+
+        } else if (d < record) {
+
+          closestBranch = branch;
+          record = d;
+
+        }
+      }
+
+      if (closestBranch != null) {
+
+        var newDir = p5.Vector.sub(leaf.pos, closestBranch.pos);
+        newDir.normalize();
+        closestBranch.dir.add(newDir);
+        closestBranch.count++;
+
+      }
+    }
+
+    for (var i = this.leaves.a.length - 1; i >= 0; i--) {
+
+      if (this.leaves.a[i].reached) {
+        this.leaves.a.splice(i, 1);
+      }
+
+    }
+
+    for (var i = this.branches.a.length - 1; i >= 0; i--) {
+
+      var branch = this.branches.a[i];
+      if (branch.count > 0) {
+        branch.dir.div(branch.count + 1);
+        this.branches.a.push(branch.next());
+        branch.reset();
+
+      }
+    }
+  }
+
+  show() {
+    for (let i = 0, len = this.leaves.a.length; i < len; i++) {
+      this.leaves.a[i].draw();
+    }
+
+      for (let i = 0, len = this.branches.a.length; i < len; i++) {
+      this.branches.a[i].show();
+    }
+
+  }
+
+}
+
+module.exports = SCTree;
+
+},{"../../autonomousagents/AgentSystem.js":2,"./SCBranch.js":11,"./SCLeaf":12}],14:[function(require,module,exports){
 const Point = require('../geometry/Point.js')
 
 class Particle extends Point{
@@ -545,7 +730,7 @@ class Particle extends Point{
 
 module.exports = Particle;
 
-},{"../geometry/Point.js":6}],12:[function(require,module,exports){
+},{"../geometry/Point.js":6}],15:[function(require,module,exports){
 const Quadtree = require('../quadtree/Quadtree.js')
 const Particle = require('./Particle.js'); // import from other files
 const Rectangle = require('../geometry/Rectangle.js'); // import from other files
@@ -555,12 +740,15 @@ const Rectangle = require('../geometry/Rectangle.js'); // import from other file
 // 1 - add GPU support
 
 class ParticleData{
-  constructor(o, Instance=Particle){
+  constructor(o){
+
+    this.spawnSettings = o.spawnSettings;
 
     this.spawnNb = o.spawnNb !== undefined ? o.spawnNb : 100 ;
 		this.spawnVel = o.spawnVel || "null"; // null, random, outside, inside
 		this.spawnPos = o.spawnPos || "random"; // circle, random, poisson,center ..
-    this.Instance = Instance;
+
+    this.instance = o.instance || Particle;
 
     this.table = [];
     //this.tableGPU = [];
@@ -608,19 +796,24 @@ class ParticleData{
   // 1 - spawn at a vector if vector given as input
 
   spawn(){
-    switch(this.spawnPos){
-      case "random":
-        this.spawnRandom();
-        break;
-      case "circle":
-        this.spawnCircle();
-        break;
-      case "center":
-        this.spawnCenter();
-        break;
-      default:
-        this.spawnRandom();
-        break;
+    if(this.spawnPos.x !== undefined){
+      this.spawnLocation(this.spawnPos);
+    }
+    else{
+      switch(this.spawnPos){
+        case "random":
+          this.spawnRandom();
+          break;
+        case "circle":
+          this.spawnCircle();
+          break;
+        case "center":
+          this.spawnCenter();
+          break;
+        default:
+          this.spawnRandom();
+          break;
+      }
     }
 
     // Velocity
@@ -634,13 +827,24 @@ class ParticleData{
 
   //====================================================
 
+  // NEED TO FIX THIS SO THAT IT WORKS WITH A GRID
+
+  spawnLocation(location){
+    for(let i = 0; i < this.spawnNb; i++){
+      const v = { pos : location };
+      this.table.push(new this.instance(v));
+    }
+  }
+
+  //====================================================
+
   spawnCircle(){
     const radius = 20;
     for(let i = 0; i < this.spawnNb; i++){
       const x = Math.sin(i/this.spawnNb*TWO_PI)*radius + this.boundary.x;
       const y =	Math.cos(i/this.spawnNb*TWO_PI)*radius + this.boundary.y;
       const v = { pos : createVector(x,y) };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
@@ -652,7 +856,7 @@ class ParticleData{
                           random(this.boundary.x-this.w/2, this.boundary.x+this.w/2),
                           random(this.boundary.y-this.h/2, this.boundary.y+this.h/2))
                 };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
@@ -661,7 +865,7 @@ class ParticleData{
   spawnCenter(){
     for(let i = 0; i < this.spawnNb; i++){
       const v = { pos : createVector(createVector(this.boundary.x,this.boundary.y)) };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
@@ -696,12 +900,14 @@ class ParticleData{
 
 module.exports = ParticleData;
 
-},{"../geometry/Rectangle.js":7,"../quadtree/Quadtree.js":14,"./Particle.js":11}],13:[function(require,module,exports){
+},{"../geometry/Rectangle.js":7,"../quadtree/Quadtree.js":17,"./Particle.js":14}],16:[function(require,module,exports){
 const Particle = require('./Particle.js');
 const ParticleData = require('./ParticleData.js');
 
 class ParticleSystem{
-	constructor(o, Instance=Particle){
+	constructor(o){
+
+		this.instance = o.instance || Particle;
 
 		// Default Values
 		this.maxVel = o.maxVel || 10;
@@ -710,7 +916,7 @@ class ParticleSystem{
 		this.col = o.col || color(200);
 
 		// Create Particle Data
-		this.data = new ParticleData(o, Instance);
+		this.data = new ParticleData(o);
 		this.a = this.data.table; // get particle array
 
 		// Get Calculate Boundary Data from ParticleData
@@ -905,7 +1111,7 @@ class ParticleSystem{
 
 module.exports = ParticleSystem;
 
-},{"./Particle.js":11,"./ParticleData.js":12}],14:[function(require,module,exports){
+},{"./Particle.js":14,"./ParticleData.js":15}],17:[function(require,module,exports){
 // ##### Quadtree Class
 
 const Rectangle = require('../geometry/Rectangle.js') // import from other files
@@ -1019,7 +1225,7 @@ class Quadtree {
 
 module.exports = Quadtree;
 
-},{"../geometry/Circle.js":5,"../geometry/Rectangle.js":7}],15:[function(require,module,exports){
+},{"../geometry/Circle.js":5,"../geometry/Rectangle.js":7}],18:[function(require,module,exports){
 // Maths
 const Maths = require('./js/maths/Maths.js'); // import from other files
 // Geometry
@@ -1042,6 +1248,10 @@ const ChainNode = require('./js/chainsystem/ChainNode.js');
 // - Differential Growth
 const DifferentialLine = require('./js/morphogenesis/differentialgrowth/DifferentialLine.js');
 const DifferentialNode = require('./js/morphogenesis/differentialgrowth/DifferentialNode.js');
+// - Space Colonization
+const SCTree = require('./js/morphogenesis/spacecolonization/SCTree.js');
+const SCBranch = require('./js/morphogenesis/spacecolonization/SCBranch.js');
+const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
 
 const modules = {
   Maths,
@@ -1050,10 +1260,11 @@ const modules = {
   Particle, ParticleSystem, ParticleData,
   Agent, AgentSystem,
   ChainSystem, ChainNode,
-  DifferentialLine, DifferentialNode
+  DifferentialLine, DifferentialNode,
+  SCTree, SCBranch, SCLeaf
 }
 
 if(typeof window !== 'undefined') window.tilde = modules; // would change Q to the name of the library
 else module.exports = modules; // in node would create a context
 
-},{"./js/autonomousagents/Agent.js":1,"./js/autonomousagents/AgentSystem.js":2,"./js/chainsystem/ChainNode.js":3,"./js/chainsystem/ChainSystem.js":4,"./js/geometry/Circle.js":5,"./js/geometry/Point.js":6,"./js/geometry/Rectangle.js":7,"./js/maths/Maths.js":8,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":9,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":10,"./js/particlesystem/Particle.js":11,"./js/particlesystem/ParticleData.js":12,"./js/particlesystem/ParticleSystem.js":13,"./js/quadtree/Quadtree.js":14}]},{},[15]);
+},{"./js/autonomousagents/Agent.js":1,"./js/autonomousagents/AgentSystem.js":2,"./js/chainsystem/ChainNode.js":3,"./js/chainsystem/ChainSystem.js":4,"./js/geometry/Circle.js":5,"./js/geometry/Point.js":6,"./js/geometry/Rectangle.js":7,"./js/maths/Maths.js":8,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":9,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":10,"./js/morphogenesis/spacecolonization/SCBranch.js":11,"./js/morphogenesis/spacecolonization/SCLeaf.js":12,"./js/morphogenesis/spacecolonization/SCTree.js":13,"./js/particlesystem/Particle.js":14,"./js/particlesystem/ParticleData.js":15,"./js/particlesystem/ParticleSystem.js":16,"./js/quadtree/Quadtree.js":17}]},{},[18]);

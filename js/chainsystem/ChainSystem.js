@@ -2,11 +2,10 @@ const AgentSystem = require('../autonomousagents/AgentSystem.js'); // import fro
 const Maths = require('../maths/Maths.js'); // import from other files
 
 class ChainSystem extends AgentSystem{
-	constructor(o, Instance){
+	constructor(o){
 
-		super(o, Instance);
+		super(o);
 
-		this.Instance = Instance;
 		this.chainDiv = o.chainDiv || 20; // defines the distance between each node ( for subdivisions )
 		this.chainClose = o.chainClose !== undefined ? o.chainClose : true ;
 
@@ -63,7 +62,7 @@ class ChainSystem extends AgentSystem{
 	makeChild(parent1, parent2){
 		const mid = maths.Maths.midpoint(parent1.pos, parent2.pos);
 		const v = { pos : mid };
-		return new this.Instance(v);
+		return new this.instance(v);
 	}
 
   //====================================================

@@ -2,7 +2,9 @@ const Particle = require('./Particle.js');
 const ParticleData = require('./ParticleData.js');
 
 class ParticleSystem{
-	constructor(o, Instance=Particle){
+	constructor(o){
+
+		this.instance = o.instance || Particle;
 
 		// Default Values
 		this.maxVel = o.maxVel || 10;
@@ -11,7 +13,7 @@ class ParticleSystem{
 		this.col = o.col || color(200);
 
 		// Create Particle Data
-		this.data = new ParticleData(o, Instance);
+		this.data = new ParticleData(o);
 		this.a = this.data.table; // get particle array
 
 		// Get Calculate Boundary Data from ParticleData

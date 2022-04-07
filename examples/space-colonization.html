@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <link rel="stylesheet" href="../css/style.css">
+	</head>
+	<body>
+
+<div id="p5js">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script src="../build/tilde.js"></script>
+
+<script>
+let tree;
+
+function setup() {
+  createCanvas(600, 600);
+
+	tree = new tilde.SCTree();
+}
+
+function draw() {
+
+	let fin = 2000;
+	if(frameCount < fin){
+		background(0);
+		tree.show();
+		tree.grow();
+		tree.branches.update();                          // PUT THIS IN THE SCTREE THING
+	}
+}
+
+</script>
+<div>
+
+</body>
+</html>

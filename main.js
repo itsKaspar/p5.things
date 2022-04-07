@@ -20,6 +20,10 @@ const ChainNode = require('./js/chainsystem/ChainNode.js');
 // - Differential Growth
 const DifferentialLine = require('./js/morphogenesis/differentialgrowth/DifferentialLine.js');
 const DifferentialNode = require('./js/morphogenesis/differentialgrowth/DifferentialNode.js');
+// - Space Colonization
+const SCTree = require('./js/morphogenesis/spacecolonization/SCTree.js');
+const SCBranch = require('./js/morphogenesis/spacecolonization/SCBranch.js');
+const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
 
 const modules = {
   Maths,
@@ -28,7 +32,8 @@ const modules = {
   Particle, ParticleSystem, ParticleData,
   Agent, AgentSystem,
   ChainSystem, ChainNode,
-  DifferentialLine, DifferentialNode
+  DifferentialLine, DifferentialNode,
+  SCTree, SCBranch, SCLeaf
 }
 
 if(typeof window !== 'undefined') window.tilde = modules; // would change Q to the name of the library

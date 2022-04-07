@@ -7,12 +7,15 @@ const Rectangle = require('../geometry/Rectangle.js'); // import from other file
 // 1 - add GPU support
 
 class ParticleData{
-  constructor(o, Instance=Particle){
+  constructor(o){
+
+    this.spawnSettings = o.spawnSettings;
 
     this.spawnNb = o.spawnNb !== undefined ? o.spawnNb : 100 ;
 		this.spawnVel = o.spawnVel || "null"; // null, random, outside, inside
 		this.spawnPos = o.spawnPos || "random"; // circle, random, poisson,center ..
-    this.Instance = Instance;
+
+    this.instance = o.instance || Particle;
 
     this.table = [];
     //this.tableGPU = [];
@@ -60,19 +63,24 @@ class ParticleData{
   // 1 - spawn at a vector if vector given as input
 
   spawn(){
-    switch(this.spawnPos){
-      case "random":
-        this.spawnRandom();
-        break;
-      case "circle":
-        this.spawnCircle();
-        break;
-      case "center":
-        this.spawnCenter();
-        break;
-      default:
-        this.spawnRandom();
-        break;
+    if(this.spawnPos.x !== undefined){
+      this.spawnLocation(this.spawnPos);
+    }
+    else{
+      switch(this.spawnPos){
+        case "random":
+          this.spawnRandom();
+          break;
+        case "circle":
+          this.spawnCircle();
+          break;
+        case "center":
+          this.spawnCenter();
+          break;
+        default:
+          this.spawnRandom();
+          break;
+      }
     }
 
     // Velocity
@@ -86,13 +94,24 @@ class ParticleData{
 
   //====================================================
 
+  // NEED TO FIX THIS SO THAT IT WORKS WITH A GRID
+
+  spawnLocation(location){
+    for(let i = 0; i < this.spawnNb; i++){
+      const v = { pos : location };
+      this.table.push(new this.instance(v));
+    }
+  }
+
+  //====================================================
+
   spawnCircle(){
     const radius = 20;
     for(let i = 0; i < this.spawnNb; i++){
       const x = Math.sin(i/this.spawnNb*TWO_PI)*radius + this.boundary.x;
       const y =	Math.cos(i/this.spawnNb*TWO_PI)*radius + this.boundary.y;
       const v = { pos : createVector(x,y) };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
@@ -104,7 +123,7 @@ class ParticleData{
                           random(this.boundary.x-this.w/2, this.boundary.x+this.w/2),
                           random(this.boundary.y-this.h/2, this.boundary.y+this.h/2))
                 };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
@@ -113,7 +132,7 @@ class ParticleData{
   spawnCenter(){
     for(let i = 0; i < this.spawnNb; i++){
       const v = { pos : createVector(createVector(this.boundary.x,this.boundary.y)) };
-      this.table.push(new this.Instance(v));
+      this.table.push(new this.instance(v));
     }
   }
 
