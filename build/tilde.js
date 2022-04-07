@@ -540,7 +540,7 @@ class SCBranch extends Agent{
     this.dir = dir || createVector(0, -1);
     this.origDir = this.dir.copy();
     this.count = 0;
-    this.len = 5;
+    this.len = 2;
 
   }
 
@@ -555,9 +555,10 @@ class SCBranch extends Agent{
     return new SCBranch({ pos : nextPos }, this, this.dir.copy());         // NEEED TO SWITCH THIS TO THIS INSTANCE
   }
 
-  show() {
+  draw() {
+    stroke(0);
+    strokeWeight(3);
     if (this.parent != null) {
-      stroke(255);
       line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
     }
 
@@ -573,12 +574,11 @@ const Agent = require('../../autonomousagents/Agent.js');
 class SCLeaf extends Agent {
   constructor(v){
     super(v);
-    this.pos = createVector(random(width), random(height - 100));
     this.reached = false;
   }
 
-  show() {
-    fill(255);
+  draw() {
+    fill(100);
     noStroke();
     circle(this.pos.x, this.pos.y, 4);
   }
@@ -595,14 +595,14 @@ class SCTree {
   constructor(start, IBranch=SCBranch, ILeaf=SCLeaf){
 
     const o1 = {
-      spawnNb: 1000,
+      spawnNb: 3000,
       spawnPos: "random",
       spawnVel: "null",
       instance: ILeaf
     };
 
     const o2 = {
-      spawnNb : 2,
+      spawnNb : 5,
       spawnPos: "random",
       spawnVel: "null",
       instance: IBranch
@@ -612,7 +612,7 @@ class SCTree {
     this.branches = new AgentSystem(o2);
 
     this.max_dist = 100;
-    this.min_dist = 10;
+    this.min_dist = 5;
 
     // algorithm to grow in one direction until a leaf is found
     // should update this to go forwards the closest leaf
@@ -701,13 +701,13 @@ class SCTree {
     }
   }
 
-  show() {
+  draw() {
     for (let i = 0, len = this.leaves.a.length; i < len; i++) {
       this.leaves.a[i].draw();
     }
 
       for (let i = 0, len = this.branches.a.length; i < len; i++) {
-      this.branches.a[i].show();
+      this.branches.a[i].draw();
     }
 
   }

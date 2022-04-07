@@ -21,11 +21,11 @@ function setup() {
 }
 
 function draw() {
-
+	background(255);
 	let fin = 2000;
 	if(frameCount < fin){
-		background(0);
-		tree.show();
+		stroke(0);
+		tree.draw();
 		tree.grow();
 		tree.branches.update();                          // PUT THIS IN THE SCTREE THING
 	}

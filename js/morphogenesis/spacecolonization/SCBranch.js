@@ -7,7 +7,7 @@ class SCBranch extends Agent{
     this.dir = dir || createVector(0, -1);
     this.origDir = this.dir.copy();
     this.count = 0;
-    this.len = 5;
+    this.len = 2;
 
   }
 
@@ -22,9 +22,10 @@ class SCBranch extends Agent{
     return new SCBranch({ pos : nextPos }, this, this.dir.copy());         // NEEED TO SWITCH THIS TO THIS INSTANCE
   }
 
-  show() {
+  draw() {
+    stroke(0);
+    strokeWeight(3);
     if (this.parent != null) {
-      stroke(255);
       line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
     }
 

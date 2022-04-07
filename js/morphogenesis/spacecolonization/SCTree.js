@@ -6,14 +6,14 @@ class SCTree {
   constructor(start, IBranch=SCBranch, ILeaf=SCLeaf){
 
     const o1 = {
-      spawnNb: 1000,
+      spawnNb: 3000,
       spawnPos: "random",
       spawnVel: "null",
       instance: ILeaf
     };
 
     const o2 = {
-      spawnNb : 2,
+      spawnNb : 5,
       spawnPos: "random",
       spawnVel: "null",
       instance: IBranch
@@ -23,7 +23,7 @@ class SCTree {
     this.branches = new AgentSystem(o2);
 
     this.max_dist = 100;
-    this.min_dist = 10;
+    this.min_dist = 5;
 
     // algorithm to grow in one direction until a leaf is found
     // should update this to go forwards the closest leaf
@@ -112,13 +112,13 @@ class SCTree {
     }
   }
 
-  show() {
+  draw() {
     for (let i = 0, len = this.leaves.a.length; i < len; i++) {
       this.leaves.a[i].draw();
     }
 
       for (let i = 0, len = this.branches.a.length; i < len; i++) {
-      this.branches.a[i].show();
+      this.branches.a[i].draw();
     }
 
   }
