@@ -1,16 +1,16 @@
 {
-  "name": "tilde",
+  "name": "bits",
   "version": "1.0.0",
-  "description": "Data Structures for the p5.js library",
+  "description": "Bits and pieces for the p5.js library",
   "main": "main.js",
   "scripts": {
-    "build": "browserify main.js > build/tilde.js",
-    "postbuild": "terser build/tilde.js -cm -o build/tilde.min.js",
+    "build": "browserify main.js > build/bits.js",
+    "postbuild": "terser build/bits.js -cm -o build/bits.min.js",
     "server": "python -m http.server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itsKaspar/Quadtree.git"
+    "url": "git+https://github.com/itsKaspar/bits.git"
   },
   "keywords": [
     "framework",
@@ -19,9 +19,9 @@
   "author": "Kaspar Ravel <kaspar.ravel@gmail.com>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/itsKaspar/Quadtree/issues"
+    "url": "https://github.com/itsKaspar/bits/issues"
   },
-  "homepage": "https://github.com/itsKaspar/Quadtree#readme",
+  "homepage": "https://github.com/itsKaspar/bits#readme",
   "devDependencies": {
     "browserify": "^17.0.0",
     "terser": "^5.12.1"

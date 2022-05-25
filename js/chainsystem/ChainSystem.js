@@ -1,5 +1,5 @@
 const AgentSystem = require('../autonomousagents/AgentSystem.js'); // import from other files
-const Maths = require('../maths/Maths.js'); // import from other files
+const Maths = require('../Maths.js'); // import from other files
 
 class ChainSystem extends AgentSystem{
 	constructor(o){

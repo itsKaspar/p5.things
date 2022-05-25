@@ -9,47 +9,52 @@
 <div id="p5js">
 
 <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-<script src="../build/tilde.min.js"></script>
+<script src="../build/bits.min.js"></script>
 
 <script>
-
-let line;
-let segmentlength = 20;
+// ##################
+// ###### Setup #####
+// ##################
 
 function setup() {
-  createCanvas(600, 600);
 
-	let options = {
-		spawnNb: 10,
-		spawnPos: "circle",
-		spawnVel: "null",
-		maxVel: 0.5,
-		maxAcc: 2,
-		padding: 0,
-		chainDiv:segmentlength,
-		chainClose:true
-	}
-
-	line = new tilde.DifferentialLine(options, tilde.DifferentialNode);
+	createCanvas(600, 600);
+	frameRate(5);
 }
+
+// #################
+// ###### Draw #####
+// #################
 
 function draw() {
-  background(255);
 
+		background(255);
+		//
+		Grafix.grainCircle(width/2, height/2, 250, color(200,50,30,220),PI/3);
+		Grafix.grainCircle(width/2, height/2, 250, color(60,100,255,220),4*PI/3);
+		Grafix.hello();
 
-	if(frameCount < 1000){
-		line.repulsionExp(1, segmentlength);
-		line.chainAttraction(0.5);
-		line.chainSubdivide();
-		line.update();
-	}
+		// let MAX = 10;
+		//
+		// for(let i = 0 ; i < MAX ; i++){
+		//   for(let j = 0 ; j < MAX ; j++){
+		//
+		//     let p1x = i*width/(MAX+1);
+		//     let p1y = j*width/(MAX+1);
+		//
+		//     let p2x = (i+1)*width/(MAX+1);
+		//     let p2y = j*width/(MAX+1);
+		//
+		//     let p3x = i*width/(MAX+1);
+		//     let p3y = (j+1)*width/(MAX+1);
+		//
+		//     grains.grainTriangle(p1x,p1y,p2x,p2y,p3x,p3y);
+		//
+		//   }
+		// }
 
-	line.draw();
-	//line.drawChainClosed();
-	//line.data.qtree.renderPoints(); // make a draw function for the quadtree
-
+		noLoop();
 }
-
 </script>
 <div>
 

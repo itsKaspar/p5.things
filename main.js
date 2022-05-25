@@ -1,5 +1,7 @@
 // Maths
-const Maths = require('./js/maths/Maths.js'); // import from other files
+const Maths = require('./js/Maths.js'); // import from other files
+// Graphics
+const Grafix = require('./js/Grafix.js');
 // Geometry
 const Point = require('./js/geometry/Point.js')
 const Rectangle = require('./js/geometry/Rectangle.js'); // import from other files
@@ -7,12 +9,12 @@ const Circle = require('./js/geometry/Circle.js');
 // Quadtree
 const Quadtree = require('./js/quadtree/Quadtree.js');
 // Particle System
-const Particle = require('./js/particlesystem/Particle.js')
-const ParticleSystem = require('./js/particlesystem/ParticleSystem.js')
-const ParticleData = require('./js/particlesystem/ParticleData.js')
+const Particle = require('./js/particlesystem/Particle.js');
+const ParticleSystem = require('./js/particlesystem/ParticleSystem.js');
+const ParticleData = require('./js/particlesystem/ParticleData.js');
 // Autonomous Agents
-const Agent = require('./js/autonomousagents/Agent.js')
-const AgentSystem = require('./js/autonomousagents/AgentSystem.js')
+const Agent = require('./js/autonomousagents/Agent.js');
+const AgentSystem = require('./js/autonomousagents/AgentSystem.js');
 // Chain System
 const ChainSystem = require('./js/chainsystem/ChainSystem.js');
 const ChainNode = require('./js/chainsystem/ChainNode.js');
@@ -27,6 +29,7 @@ const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
 
 const modules = {
   Maths,
+  Grafix,
   Point, Rectangle, Circle,
   Quadtree,
   Particle, ParticleSystem, ParticleData,
@@ -36,5 +39,5 @@ const modules = {
   SCTree, SCBranch, SCLeaf
 }
 
-if(typeof window !== 'undefined') window.tilde = modules; // would change Q to the name of the library
+if(typeof window !== 'undefined') window.bits = modules; // would change Q to the name of the library
 else module.exports = modules; // in node would create a context

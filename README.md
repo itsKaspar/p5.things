@@ -12,7 +12,7 @@ $ npm install git+https://github.com/itsKaspar/bits.git
 or download a minified version [here](https://raw.githubusercontent.com/itsKaspar/bits/main/build/bits.min.js) and include it in your project this way :
 
 ```html
-<script src="tilde.min.js"></script>
+<script src="bits.min.js"></script>
 ````
 
 ## Usage

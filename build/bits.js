@@ -1,4 +1,150 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const Maths = require('./Maths.js');
+
+class Grafix{
+
+static grainCircle(cx,cy,cr,c=color(0), dir=TWO_PI){
+
+	stroke(c);
+	strokeWeight(1.1); // so that it is not pixels
+
+	const AREA = PI * cr * cr;
+
+	// LIGHTING SYSTEM
+	const v = p5.Vector.fromAngle(dir,cr); // pick random point on edge of sphere
+	const light = createVector(cx+v.x, cy+v.y);
+
+	//GENERATE POINTS
+	for(let i = 0; i < AREA / 2 ; i++){
+
+		while(true){
+
+			const p = Maths.pointInCircle(cx, cy, cr);
+			const probability = map(dist(p.x, p.y, light.x, light.y),0,(cr*2),1,0);
+
+			if(random() < probability == 0){          // I DONT UDBNERSTAND WHY I HAVE AN EQL 0 here
+				point(p.x,p.y);
+				break;
+			}
+		}
+	}
+}
+
+static grainTriangle(x0, y0, x1, y1, x2, y2){
+	strokeWeight(1.1); // so that it is not pixels
+
+	const AREA = ( x0 * ( y1 - y2 ) + x1 * ( y2 - y0 ) + x2 * (y0 - y1) ) / 2;
+
+	// LIGHTING SYSTEM
+	//const v = p5.Vector.fromAngle(dir,cr); // pick random point on edge of sphere
+	//const light = createVector(cx+v.x, cy+v.y);
+
+	// GENERATE POINTS
+	for(let i = 0; i < AREA / 2 ; i++){
+
+		//while(true){
+			//const p = pointInCircle(cx, cy, cr);
+			const p = Maths.pointInTriangle(x0,y0,x1,y1,x2,y2);
+			//const probability = map(dist(p.x, p.y, light.x, light.y),0,(cr*2),1,0);
+
+			//if(random() < probability == 0){          // I DONT UDBNERSTAND WHY I HAVE AN EQL 0 here
+				point(p.x,p.y);
+				//break;
+			//}
+		//}
+	 }
+  }
+
+  static hello(){
+    console.log("hello world")
+  }
+}
+
+if(typeof window !== 'undefined') window.Grafix = Grafix; // export for window
+module.exports = Grafix; // and export for module
+
+},{"./Maths.js":2}],2:[function(require,module,exports){
+class Maths{
+  //static PHI = 1.6543;
+  static distSq(x1, y1, x2, y2){ return (x2 - x1)**2 + (y2 - y1)**2; }
+
+  // Vector Functions
+  static distSq(v1, v2) { return (v2.x - v1.x) ** 2 + (v2.y - v1.y) ** 2; }
+  static midpoint(v1, v2) { return (createVector((v1.x + v2.x) / 2, (v1.y + v2.y) / 2)); }
+
+    // PROBABILITY
+
+    // static randInt(min, max){ return int(random(min, max+1)); }
+
+  // LINEAR AND NON LINEAR MAPPING
+  // EXPIN EXPOUT EXPINOUT
+  // QUADRATICIN OUT
+   //  static expInOut(x) {
+   //  if(x == 0.0 || x == 1.0) return x;
+   //
+   //  	if(x < 0.5){
+   //  		return(0.5 * pow(2, (20 * x) - 10));
+   //  	}
+   //  	else{
+   //  		return(-0.5 * pow(2, (-20 * x) + 10) + 1);
+   //  	}
+   // }
+   // GEOMETRY
+
+   // # Geometry
+   // # Check if points are inside polygons
+   static isPointinCircle(px, py, cx, cy, cr){ return (distSq(px, py, cx, cy) < cr**2); }
+   static isPointinSquare(){}
+
+   // # Generate uniform points inside polygons
+   static pointInQuad(){}
+   static pointInSquare(){}
+
+   static pointInTriangle(x0, y0, x1, y1, x2, y2){
+  	// we must put x1,x2 and y1 y2 at the origin before transformation
+  	// and put them back afterwards
+
+  	let a1 = random(); // nice fades if i put an sqrt here
+  	let a2 = random();
+  	if((a1 + a2) >=1 ){ // reflect the points that are outside 1st triangle
+  		a1 = 1 - a1; // https://blogs.sas.com/content/iml/2020/10/19/random-points-in-triangle.html
+  		a2 = 1 - a2;
+  	}
+  	const px = a1 * (x1-x0) + a2 * (x2-x0) + x0;
+  	const py = a1 * (y1-y0) + a2 * (y2-y0) + y0;
+
+  	return createVector(px, py);
+  }
+
+  static pointInCircle(cx, cy, cr){
+    // uniformely generate points in a circle
+    // https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
+
+    const r = cr * Math.sqrt(Math.random()); // if i add a second square root here I get something more intense along the curves
+    const theta = Math.random() * 2 * Math.PI;   // if we add an sqrt here it does a neat spiral
+
+    const px = cx + r * Math.cos(theta)
+    const py = cy + r * Math.sin(theta)
+
+    return {x : px, y : py};
+  }
+
+  // # Misc
+
+  static fixId(i, max) {
+      if (i >= 0) {
+        return i % max;
+      } else if (i < 0) {
+        return max + i;
+      }
+  }
+
+}
+
+window.Maths = Maths; // export for window
+module.exports = Maths; // and module
+
+},{}],3:[function(require,module,exports){
 const Particle = require('../particlesystem/Particle.js'); // import from other files
 
 class Agent extends Particle{
@@ -40,7 +186,7 @@ class Agent extends Particle{
 
 module.exports = Agent;
 
-},{"../particlesystem/Particle.js":14}],2:[function(require,module,exports){
+},{"../particlesystem/Particle.js":15}],4:[function(require,module,exports){
 const Agent = require('./Agent.js');
 const ParticleSystem = require('../particlesystem/ParticleSystem.js');
 
@@ -206,7 +352,7 @@ class AgentSystem extends ParticleSystem{
 
 module.exports = AgentSystem;
 
-},{"../particlesystem/ParticleSystem.js":16,"./Agent.js":1}],3:[function(require,module,exports){
+},{"../particlesystem/ParticleSystem.js":17,"./Agent.js":3}],5:[function(require,module,exports){
 const Agent = require('../autonomousagents/Agent.js');
 
 class ChainNode extends Agent {
@@ -217,9 +363,9 @@ class ChainNode extends Agent {
 
 module.exports = ChainNode;
 
-},{"../autonomousagents/Agent.js":1}],4:[function(require,module,exports){
+},{"../autonomousagents/Agent.js":3}],6:[function(require,module,exports){
 const AgentSystem = require('../autonomousagents/AgentSystem.js'); // import from other files
-const Maths = require('../maths/Maths.js'); // import from other files
+const Maths = require('../Maths.js'); // import from other files
 
 class ChainSystem extends AgentSystem{
 	constructor(o){
@@ -331,7 +477,7 @@ class ChainSystem extends AgentSystem{
 
 module.exports = ChainSystem;
 
-},{"../autonomousagents/AgentSystem.js":2,"../maths/Maths.js":8}],5:[function(require,module,exports){
+},{"../Maths.js":2,"../autonomousagents/AgentSystem.js":4}],7:[function(require,module,exports){
 class Circle {
   constructor(x, y, r) {
     this.x = x;
@@ -372,7 +518,7 @@ class Circle {
 
 module.exports = Circle;
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 class Point{
     constructor(v){
       this.pos = v.pos || createVector(width/2,height/2);
@@ -392,7 +538,7 @@ class Point{
 
 module.exports = Point;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 class Rectangle {
   constructor(x, y, w, h) {
     this.x = x;
@@ -418,92 +564,7 @@ class Rectangle {
 
 module.exports = Rectangle;
 
-},{}],8:[function(require,module,exports){
-class Maths{
-  //static PHI = 1.6543;
-  static distSq(x1, y1, x2, y2){ return (x2 - x1)**2 + (y2 - y1)**2; }
-
-  // PROBABILITY
-
-  // static randInt(min, max){ return int(random(min, max+1)); }
-
-// LINEAR AND NON LINEAR MAPPING
-// EXPIN EXPOUT EXPINOUT
-// QUADRATICIN OUT
- //  static expInOut(x) {
- //  if(x == 0.0 || x == 1.0) return x;
- //
- //  	if(x < 0.5){
- //  		return(0.5 * pow(2, (20 * x) - 10));
- //  	}
- //  	else{
- //  		return(-0.5 * pow(2, (-20 * x) + 10) + 1);
- //  	}
- // }
- // GEOMETRY
-
- static isPointinCircle(px, py, cx, cy, cr){
- 	return (distSq(px, py, cx, cy) < cr**2);
- }
-
- static isPointinSquare(){}
-
-
- // GENERATE RANDOM UNIFORM POINTS
-
- static pointInQuad(){}
-
- static pointInSquare(){}
-
-//  static pointInTriangle(x0, y0, x1, y1, x2, y2){
-// 	// we must put x1,x2 and y1 y2 at the origin before transformation
-// 	// and put them back afterwards
-//
-// 	let a1 = random(); // nice fades if i put an sqrt here
-// 	let a2 = random();
-// 	if((a1 + a2) >=1 ){ // reflect the points that are outside 1st triangle
-// 		a1 = 1 - a1; // https://blogs.sas.com/content/iml/2020/10/19/random-points-in-triangle.html
-// 		a2 = 1 - a2;
-// 	}
-// 	const px = a1 * (x1-x0) + a2 * (x2-x0) + x0;
-// 	const py = a1 * (y1-y0) + a2 * (y2-y0) + y0;
-//
-// 	return createVector(px, py);
-// }
-
-  static pointInCircle(cx, cy, cr){
-  	// uniformely generate points in a circle
-  	// https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
-
-  	const r = cr * Math.sqrt(Math.random()); // if i add a second square root here I get something more intense along the curves
-  	const theta = Math.random() * 2 * Math.PI;   // if we add an sqrt here it does a neat spiral
-
-  	const px = cx + r * Math.cos(theta)
-  	const py = cy + r * Math.sin(theta)
-
-  	return {x : px, y : py};
-}
-
-// Vector Functions
-
-static midpoint(v1, v2) { return (createVector((v1.x + v2.x) / 2, (v1.y + v2.y) / 2)); }
-static distSq(v1, v2) { return (v2.x - v1.x) ** 2 + (v2.y - v1.y) ** 2; }
-
-static fixId(i, max) {
-    if (i >= 0) {
-      return i % max;
-    } else if (i < 0) {
-      return max + i;
-    }
-}
-
-}
-
-
-if(typeof window !== 'undefined') window.maths = { Maths }; // would change Q to the name of the library
-else module.exports = { Maths }; // in node would create a context
-
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 const ChainSystem = require('../../chainsystem/ChainSystem.js');
 
 class DifferentialLine extends ChainSystem {
@@ -515,7 +576,7 @@ class DifferentialLine extends ChainSystem {
 
 module.exports = DifferentialLine;
 
-},{"../../chainsystem/ChainSystem.js":4}],10:[function(require,module,exports){
+},{"../../chainsystem/ChainSystem.js":6}],11:[function(require,module,exports){
 const ChainNode = require('../../chainsystem/ChainNode.js');
 
 class DifferentialNode extends ChainNode {
@@ -530,7 +591,7 @@ class DifferentialNode extends ChainNode {
 
 module.exports = DifferentialNode;
 
-},{"../../chainsystem/ChainNode.js":3}],11:[function(require,module,exports){
+},{"../../chainsystem/ChainNode.js":5}],12:[function(require,module,exports){
 const Agent = require('../../autonomousagents/Agent.js');
 
 class SCBranch extends Agent{
@@ -568,7 +629,7 @@ class SCBranch extends Agent{
 
 module.exports = SCBranch;
 
-},{"../../autonomousagents/Agent.js":1}],12:[function(require,module,exports){
+},{"../../autonomousagents/Agent.js":3}],13:[function(require,module,exports){
 const Agent = require('../../autonomousagents/Agent.js');
 
 class SCLeaf extends Agent {
@@ -586,7 +647,7 @@ class SCLeaf extends Agent {
 
 module.exports = SCLeaf;
 
-},{"../../autonomousagents/Agent.js":1}],13:[function(require,module,exports){
+},{"../../autonomousagents/Agent.js":3}],14:[function(require,module,exports){
 const AgentSystem = require('../../autonomousagents/AgentSystem.js');
 const SCBranch = require('./SCBranch.js');
 const SCLeaf = require('./SCLeaf');
@@ -716,7 +777,7 @@ class SCTree {
 
 module.exports = SCTree;
 
-},{"../../autonomousagents/AgentSystem.js":2,"./SCBranch.js":11,"./SCLeaf":12}],14:[function(require,module,exports){
+},{"../../autonomousagents/AgentSystem.js":4,"./SCBranch.js":12,"./SCLeaf":13}],15:[function(require,module,exports){
 const Point = require('../geometry/Point.js')
 
 class Particle extends Point{
@@ -730,7 +791,7 @@ class Particle extends Point{
 
 module.exports = Particle;
 
-},{"../geometry/Point.js":6}],15:[function(require,module,exports){
+},{"../geometry/Point.js":8}],16:[function(require,module,exports){
 const Quadtree = require('../quadtree/Quadtree.js')
 const Particle = require('./Particle.js'); // import from other files
 const Rectangle = require('../geometry/Rectangle.js'); // import from other files
@@ -900,7 +961,7 @@ class ParticleData{
 
 module.exports = ParticleData;
 
-},{"../geometry/Rectangle.js":7,"../quadtree/Quadtree.js":17,"./Particle.js":14}],16:[function(require,module,exports){
+},{"../geometry/Rectangle.js":9,"../quadtree/Quadtree.js":18,"./Particle.js":15}],17:[function(require,module,exports){
 const Particle = require('./Particle.js');
 const ParticleData = require('./ParticleData.js');
 
@@ -1111,7 +1172,7 @@ class ParticleSystem{
 
 module.exports = ParticleSystem;
 
-},{"./Particle.js":14,"./ParticleData.js":15}],17:[function(require,module,exports){
+},{"./Particle.js":15,"./ParticleData.js":16}],18:[function(require,module,exports){
 // ##### Quadtree Class
 
 const Rectangle = require('../geometry/Rectangle.js') // import from other files
@@ -1225,9 +1286,11 @@ class Quadtree {
 
 module.exports = Quadtree;
 
-},{"../geometry/Circle.js":5,"../geometry/Rectangle.js":7}],18:[function(require,module,exports){
+},{"../geometry/Circle.js":7,"../geometry/Rectangle.js":9}],19:[function(require,module,exports){
 // Maths
-const Maths = require('./js/maths/Maths.js'); // import from other files
+const Maths = require('./js/Maths.js'); // import from other files
+// Graphics
+const Grafix = require('./js/Grafix.js');
 // Geometry
 const Point = require('./js/geometry/Point.js')
 const Rectangle = require('./js/geometry/Rectangle.js'); // import from other files
@@ -1235,12 +1298,12 @@ const Circle = require('./js/geometry/Circle.js');
 // Quadtree
 const Quadtree = require('./js/quadtree/Quadtree.js');
 // Particle System
-const Particle = require('./js/particlesystem/Particle.js')
-const ParticleSystem = require('./js/particlesystem/ParticleSystem.js')
-const ParticleData = require('./js/particlesystem/ParticleData.js')
+const Particle = require('./js/particlesystem/Particle.js');
+const ParticleSystem = require('./js/particlesystem/ParticleSystem.js');
+const ParticleData = require('./js/particlesystem/ParticleData.js');
 // Autonomous Agents
-const Agent = require('./js/autonomousagents/Agent.js')
-const AgentSystem = require('./js/autonomousagents/AgentSystem.js')
+const Agent = require('./js/autonomousagents/Agent.js');
+const AgentSystem = require('./js/autonomousagents/AgentSystem.js');
 // Chain System
 const ChainSystem = require('./js/chainsystem/ChainSystem.js');
 const ChainNode = require('./js/chainsystem/ChainNode.js');
@@ -1255,6 +1318,7 @@ const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
 
 const modules = {
   Maths,
+  Grafix,
   Point, Rectangle, Circle,
   Quadtree,
   Particle, ParticleSystem, ParticleData,
@@ -1264,7 +1328,7 @@ const modules = {
   SCTree, SCBranch, SCLeaf
 }
 
-if(typeof window !== 'undefined') window.tilde = modules; // would change Q to the name of the library
+if(typeof window !== 'undefined') window.bits = modules; // would change Q to the name of the library
 else module.exports = modules; // in node would create a context
 
-},{"./js/autonomousagents/Agent.js":1,"./js/autonomousagents/AgentSystem.js":2,"./js/chainsystem/ChainNode.js":3,"./js/chainsystem/ChainSystem.js":4,"./js/geometry/Circle.js":5,"./js/geometry/Point.js":6,"./js/geometry/Rectangle.js":7,"./js/maths/Maths.js":8,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":9,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":10,"./js/morphogenesis/spacecolonization/SCBranch.js":11,"./js/morphogenesis/spacecolonization/SCLeaf.js":12,"./js/morphogenesis/spacecolonization/SCTree.js":13,"./js/particlesystem/Particle.js":14,"./js/particlesystem/ParticleData.js":15,"./js/particlesystem/ParticleSystem.js":16,"./js/quadtree/Quadtree.js":17}]},{},[18]);
+},{"./js/Grafix.js":1,"./js/Maths.js":2,"./js/autonomousagents/Agent.js":3,"./js/autonomousagents/AgentSystem.js":4,"./js/chainsystem/ChainNode.js":5,"./js/chainsystem/ChainSystem.js":6,"./js/geometry/Circle.js":7,"./js/geometry/Point.js":8,"./js/geometry/Rectangle.js":9,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":10,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":11,"./js/morphogenesis/spacecolonization/SCBranch.js":12,"./js/morphogenesis/spacecolonization/SCLeaf.js":13,"./js/morphogenesis/spacecolonization/SCTree.js":14,"./js/particlesystem/Particle.js":15,"./js/particlesystem/ParticleData.js":16,"./js/particlesystem/ParticleSystem.js":17,"./js/quadtree/Quadtree.js":18}]},{},[19]);
