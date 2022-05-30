@@ -146,8 +146,26 @@ module.exports = Maths; // and module
 
 },{}],3:[function(require,module,exports){
 class OS{
-	constructor(){}
+	constructor(){
+		let windoxs = [];
+	}
 
+	draw(){
+		for(let i = 0; i < windoxs.length; i++){
+			windoxs[i].draw();
+		}
+	}
+
+	mousePressed(){
+		for(let i = 0; i < windoxs.length; i++){
+			windoxs[i].mousePressed();
+		}
+	}
+	mouseDragged(){
+		for(let i = 0; i < windoxs.length; i++){
+			windoxs[i].mouseDragged();
+		}
+	}
 }
 
 class Windox{
@@ -160,6 +178,7 @@ class Windox{
 		let y = random(0 + this.height/2, height - this.height/2);
     this.pos = createVector(x, y);
     this.s = 30; // space
+		this.padding = 30;
 
 		this.display = true;
 	}
@@ -190,7 +209,11 @@ class Windox{
 							this.s/4);
 
     // draw content of the window
-    //text(0,0,""test");
+		noStroke();
+		fill(0);
+    text(this.content,
+					this.pos.x - this.width/2 + this.padding,
+					this.pos.y - this.height/2 + textAscent() + this.padding + this.s);
 		}
 	}
 
