@@ -26,6 +26,8 @@ const DifferentialNode = require('./js/morphogenesis/differentialgrowth/Differen
 const SCTree = require('./js/morphogenesis/spacecolonization/SCTree.js');
 const SCBranch = require('./js/morphogenesis/spacecolonization/SCBranch.js');
 const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
+// Operating System
+const Windox = require('./js/OperatingSystem.js');
 
 const modules = {
   Maths,
@@ -36,7 +38,8 @@ const modules = {
   Agent, AgentSystem,
   ChainSystem, ChainNode,
   DifferentialLine, DifferentialNode,
-  SCTree, SCBranch, SCLeaf
+  SCTree, SCBranch, SCLeaf,
+  Windox
 }
 
 if(typeof window !== 'undefined') window.bits = modules; // would change Q to the name of the library

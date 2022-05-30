@@ -141,10 +141,53 @@ class Maths{
 
 }
 
-window.Maths = Maths; // export for window
+if(typeof window !== 'undefined') window.Maths = Maths; // export for window
 module.exports = Maths; // and module
 
 },{}],3:[function(require,module,exports){
+class Windox{
+	constructor(o){
+
+    this.content = "hello world"
+    this.width = width/2;
+    this.height = height/2;
+    this.pos = createVector(width/2, height/2);
+    this.BAR = 30;
+
+	}
+
+  //====================================================
+
+  // DRAWING
+
+  //====================================================
+
+	draw() {
+    rectMode(CENTER);
+    fill(255,255,255);
+    stroke(0,0,0);
+
+    // window
+    rect(this.pos.x, this.pos.y, this.width, this.height);
+
+    // top fo the window
+    stroke(255,0,0);
+    line(this.pos.x - this.width/2, this.pos.y - this.height/2 + this.BAR,
+          this.pos.x + this.width/2, this.pos.y - this.height/2 + this.BAR);
+
+    // draw content of the window
+    //text(0,0,""test");
+
+	}
+
+  //====================================================
+
+}
+
+if(typeof window !== 'undefined') window.Windox = Windox; // export for window
+module.exports = Windox; // and export for module
+
+},{}],4:[function(require,module,exports){
 const Particle = require('../particlesystem/Particle.js'); // import from other files
 
 class Agent extends Particle{
@@ -186,7 +229,7 @@ class Agent extends Particle{
 
 module.exports = Agent;
 
-},{"../particlesystem/Particle.js":15}],4:[function(require,module,exports){
+},{"../particlesystem/Particle.js":16}],5:[function(require,module,exports){
 const Agent = require('./Agent.js');
 const ParticleSystem = require('../particlesystem/ParticleSystem.js');
 
@@ -352,7 +395,7 @@ class AgentSystem extends ParticleSystem{
 
 module.exports = AgentSystem;
 
-},{"../particlesystem/ParticleSystem.js":17,"./Agent.js":3}],5:[function(require,module,exports){
+},{"../particlesystem/ParticleSystem.js":18,"./Agent.js":4}],6:[function(require,module,exports){
 const Agent = require('../autonomousagents/Agent.js');
 
 class ChainNode extends Agent {
@@ -363,7 +406,7 @@ class ChainNode extends Agent {
 
 module.exports = ChainNode;
 
-},{"../autonomousagents/Agent.js":3}],6:[function(require,module,exports){
+},{"../autonomousagents/Agent.js":4}],7:[function(require,module,exports){
 const AgentSystem = require('../autonomousagents/AgentSystem.js'); // import from other files
 const Maths = require('../Maths.js'); // import from other files
 
@@ -477,7 +520,7 @@ class ChainSystem extends AgentSystem{
 
 module.exports = ChainSystem;
 
-},{"../Maths.js":2,"../autonomousagents/AgentSystem.js":4}],7:[function(require,module,exports){
+},{"../Maths.js":2,"../autonomousagents/AgentSystem.js":5}],8:[function(require,module,exports){
 class Circle {
   constructor(x, y, r) {
     this.x = x;
@@ -518,7 +561,7 @@ class Circle {
 
 module.exports = Circle;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 class Point{
     constructor(v){
       this.pos = v.pos || createVector(width/2,height/2);
@@ -538,7 +581,7 @@ class Point{
 
 module.exports = Point;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 class Rectangle {
   constructor(x, y, w, h) {
     this.x = x;
@@ -564,7 +607,7 @@ class Rectangle {
 
 module.exports = Rectangle;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 const ChainSystem = require('../../chainsystem/ChainSystem.js');
 
 class DifferentialLine extends ChainSystem {
@@ -576,7 +619,7 @@ class DifferentialLine extends ChainSystem {
 
 module.exports = DifferentialLine;
 
-},{"../../chainsystem/ChainSystem.js":6}],11:[function(require,module,exports){
+},{"../../chainsystem/ChainSystem.js":7}],12:[function(require,module,exports){
 const ChainNode = require('../../chainsystem/ChainNode.js');
 
 class DifferentialNode extends ChainNode {
@@ -591,7 +634,7 @@ class DifferentialNode extends ChainNode {
 
 module.exports = DifferentialNode;
 
-},{"../../chainsystem/ChainNode.js":5}],12:[function(require,module,exports){
+},{"../../chainsystem/ChainNode.js":6}],13:[function(require,module,exports){
 const Agent = require('../../autonomousagents/Agent.js');
 
 class SCBranch extends Agent{
@@ -629,7 +672,7 @@ class SCBranch extends Agent{
 
 module.exports = SCBranch;
 
-},{"../../autonomousagents/Agent.js":3}],13:[function(require,module,exports){
+},{"../../autonomousagents/Agent.js":4}],14:[function(require,module,exports){
 const Agent = require('../../autonomousagents/Agent.js');
 
 class SCLeaf extends Agent {
@@ -647,7 +690,7 @@ class SCLeaf extends Agent {
 
 module.exports = SCLeaf;
 
-},{"../../autonomousagents/Agent.js":3}],14:[function(require,module,exports){
+},{"../../autonomousagents/Agent.js":4}],15:[function(require,module,exports){
 const AgentSystem = require('../../autonomousagents/AgentSystem.js');
 const SCBranch = require('./SCBranch.js');
 const SCLeaf = require('./SCLeaf');
@@ -777,7 +820,7 @@ class SCTree {
 
 module.exports = SCTree;
 
-},{"../../autonomousagents/AgentSystem.js":4,"./SCBranch.js":12,"./SCLeaf":13}],15:[function(require,module,exports){
+},{"../../autonomousagents/AgentSystem.js":5,"./SCBranch.js":13,"./SCLeaf":14}],16:[function(require,module,exports){
 const Point = require('../geometry/Point.js')
 
 class Particle extends Point{
@@ -791,7 +834,7 @@ class Particle extends Point{
 
 module.exports = Particle;
 
-},{"../geometry/Point.js":8}],16:[function(require,module,exports){
+},{"../geometry/Point.js":9}],17:[function(require,module,exports){
 const Quadtree = require('../quadtree/Quadtree.js')
 const Particle = require('./Particle.js'); // import from other files
 const Rectangle = require('../geometry/Rectangle.js'); // import from other files
@@ -961,7 +1004,7 @@ class ParticleData{
 
 module.exports = ParticleData;
 
-},{"../geometry/Rectangle.js":9,"../quadtree/Quadtree.js":18,"./Particle.js":15}],17:[function(require,module,exports){
+},{"../geometry/Rectangle.js":10,"../quadtree/Quadtree.js":19,"./Particle.js":16}],18:[function(require,module,exports){
 const Particle = require('./Particle.js');
 const ParticleData = require('./ParticleData.js');
 
@@ -1172,7 +1215,7 @@ class ParticleSystem{
 
 module.exports = ParticleSystem;
 
-},{"./Particle.js":15,"./ParticleData.js":16}],18:[function(require,module,exports){
+},{"./Particle.js":16,"./ParticleData.js":17}],19:[function(require,module,exports){
 // ##### Quadtree Class
 
 const Rectangle = require('../geometry/Rectangle.js') // import from other files
@@ -1286,7 +1329,7 @@ class Quadtree {
 
 module.exports = Quadtree;
 
-},{"../geometry/Circle.js":7,"../geometry/Rectangle.js":9}],19:[function(require,module,exports){
+},{"../geometry/Circle.js":8,"../geometry/Rectangle.js":10}],20:[function(require,module,exports){
 // Maths
 const Maths = require('./js/Maths.js'); // import from other files
 // Graphics
@@ -1315,6 +1358,8 @@ const DifferentialNode = require('./js/morphogenesis/differentialgrowth/Differen
 const SCTree = require('./js/morphogenesis/spacecolonization/SCTree.js');
 const SCBranch = require('./js/morphogenesis/spacecolonization/SCBranch.js');
 const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
+// Operating System
+const Windox = require('./js/OperatingSystem.js');
 
 const modules = {
   Maths,
@@ -1325,10 +1370,11 @@ const modules = {
   Agent, AgentSystem,
   ChainSystem, ChainNode,
   DifferentialLine, DifferentialNode,
-  SCTree, SCBranch, SCLeaf
+  SCTree, SCBranch, SCLeaf,
+  Windox
 }
 
 if(typeof window !== 'undefined') window.bits = modules; // would change Q to the name of the library
 else module.exports = modules; // in node would create a context
 
-},{"./js/Grafix.js":1,"./js/Maths.js":2,"./js/autonomousagents/Agent.js":3,"./js/autonomousagents/AgentSystem.js":4,"./js/chainsystem/ChainNode.js":5,"./js/chainsystem/ChainSystem.js":6,"./js/geometry/Circle.js":7,"./js/geometry/Point.js":8,"./js/geometry/Rectangle.js":9,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":10,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":11,"./js/morphogenesis/spacecolonization/SCBranch.js":12,"./js/morphogenesis/spacecolonization/SCLeaf.js":13,"./js/morphogenesis/spacecolonization/SCTree.js":14,"./js/particlesystem/Particle.js":15,"./js/particlesystem/ParticleData.js":16,"./js/particlesystem/ParticleSystem.js":17,"./js/quadtree/Quadtree.js":18}]},{},[19]);
+},{"./js/Grafix.js":1,"./js/Maths.js":2,"./js/OperatingSystem.js":3,"./js/autonomousagents/Agent.js":4,"./js/autonomousagents/AgentSystem.js":5,"./js/chainsystem/ChainNode.js":6,"./js/chainsystem/ChainSystem.js":7,"./js/geometry/Circle.js":8,"./js/geometry/Point.js":9,"./js/geometry/Rectangle.js":10,"./js/morphogenesis/differentialgrowth/DifferentialLine.js":11,"./js/morphogenesis/differentialgrowth/DifferentialNode.js":12,"./js/morphogenesis/spacecolonization/SCBranch.js":13,"./js/morphogenesis/spacecolonization/SCLeaf.js":14,"./js/morphogenesis/spacecolonization/SCTree.js":15,"./js/particlesystem/Particle.js":16,"./js/particlesystem/ParticleData.js":17,"./js/particlesystem/ParticleSystem.js":18,"./js/quadtree/Quadtree.js":19}]},{},[20]);
