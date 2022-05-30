@@ -13,7 +13,7 @@
 
 <script>
 
-let fenetre;
+let w = [];
 
 // ##################
 // ###### Setup #####
@@ -22,8 +22,10 @@ let fenetre;
 function setup() {
 
 	createCanvas(600, 600);
-	frameRate(5);
-	fenetre = new Windox();
+	for(let i = 0; i < 10; i++){
+		w.push(new Windox());
+	}
+
 }
 
 // #################
@@ -33,10 +35,26 @@ function setup() {
 function draw() {
 
 		background(255);
-		fenetre.draw();
+		for(let i = 0; i < 10; i++){
+			w[i].draw();
+		}
 
-		noLoop();
+		//noLoop();
 }
+
+function mousePressed(){
+	for(let i = 0; i < 10; i++){
+		w[i].mousePressed();
+	}
+}
+
+function mouseDragged(){
+	for(let i = 0; i < 10; i++){
+		w[i].mouseDragged();
+	}
+}
+
+
 </script>
 <div>
 
