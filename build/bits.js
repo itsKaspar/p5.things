@@ -145,9 +145,10 @@ if(typeof window !== 'undefined') window.Maths = Maths; // export for window
 module.exports = Maths; // and module
 
 },{}],3:[function(require,module,exports){
-class OS{
+class Ox{
 	constructor(){
 		let windoxs = [];
+		let sysFontSize = 12;
 	}
 
 	draw(){
@@ -165,6 +166,11 @@ class OS{
 		for(let i = 0; i < windoxs.length; i++){
 			windoxs[i].mouseDragged();
 		}
+	}
+
+	addWindox(){
+		let w = new Windox();
+		windoxs.push(w)
 	}
 }
 
@@ -252,15 +258,12 @@ class Windox{
 }
 
 function drawCross(cx, cy, w){
-	// draw cross
-	//descending line
-	line(cx - w, cy + w, cx + w, cy - w);
-	//ascending line
-	line(cx - w, cy - w, cx + w, cy + w);
+	line(cx - w, cy + w, cx + w, cy - w); //descending line
+	line(cx - w, cy - w, cx + w, cy + w); //ascending line
 }
 
-if(typeof window !== 'undefined') window.Windox = Windox; // export for window
-module.exports = Windox; // and export for module
+if(typeof window !== 'undefined') window.Ox = Ox; // export for window
+module.exports = Ox; // and export for module
 
 },{}],4:[function(require,module,exports){
 const Particle = require('../particlesystem/Particle.js'); // import from other files
@@ -1434,7 +1437,7 @@ const SCTree = require('./js/morphogenesis/spacecolonization/SCTree.js');
 const SCBranch = require('./js/morphogenesis/spacecolonization/SCBranch.js');
 const SCLeaf = require('./js/morphogenesis/spacecolonization/SCLeaf.js');
 // Operating System
-const Windox = require('./js/OperatingSystem.js');
+const Ox = require('./js/OperatingSystem.js');
 
 const modules = {
   Maths,
@@ -1446,7 +1449,7 @@ const modules = {
   ChainSystem, ChainNode,
   DifferentialLine, DifferentialNode,
   SCTree, SCBranch, SCLeaf,
-  Windox
+  Ox
 }
 
 if(typeof window !== 'undefined') window.bits = modules; // would change Q to the name of the library

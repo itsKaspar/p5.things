@@ -13,7 +13,7 @@
 
 <script>
 
-let w = [];
+let ox = new Ox();
 
 // ##################
 // ###### Setup #####
@@ -23,7 +23,7 @@ function setup() {
 
 	createCanvas(600, 600);
 	for(let i = 0; i < 10; i++){
-		w.push(new Windox());
+		ox.addWindox();
 	}
 
 }
@@ -34,24 +34,18 @@ function setup() {
 
 function draw() {
 
-		background(255);
-		for(let i = 0; i < 10; i++){
-			w[i].draw();
-		}
+	background(255);
+	ox.draw();
 
 		//noLoop();
 }
 
 function mousePressed(){
-	for(let i = 0; i < 10; i++){
-		w[i].mousePressed();
-	}
+	ox.mousePressed();
 }
 
 function mouseDragged(){
-	for(let i = 0; i < 10; i++){
-		w[i].mouseDragged();
-	}
+	ox.mouseDragged();
 }
 
 
